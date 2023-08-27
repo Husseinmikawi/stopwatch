@@ -11,6 +11,7 @@
 #include"..\MCAL\EXT_interrupt.h"
 #include"..\Service\common_macros.h"
 #include"..\Service\REG.h"
+#include"../Service/SW_Timer.h"
 
 static int sec =0;
 unsigned char EXT_flag=0;
@@ -38,13 +39,15 @@ void stopwatch_init(void)
 
 
     Systick_setCallBack(Second_count);
-    Systick_init(&config);
-
 
     /* LCD initializations */
     LCD_init();
-    LCD_displayStringRowColumn(0,0,"**StopWatch**");
+    LCD_displayStringRowColumn(0,1,"**StopWatch**");
+    LCD_displayStringRowColumn(1,4,"Project");
+    SWT_delay(1500);
+    LCD_clearScreen();
 
+    Systick_init(&config);
 
 }
 
@@ -60,6 +63,15 @@ void stopwatch_ON(void)
                                              tmr[4]:units of hours
                                              tmr[5]:tens  of hours */
     unsigned char i;
+    unsigned char Character1[8] = {0x00,
+                                   0x1B,
+                                   0x1B,
+                                   0x1B,
+                                   0x1B,
+                                   0x1B,
+                                   0x1B,
+                                   0x00 };
+    unsigned char Character2[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
     tmr[0]=sec; // store the value of second on tmr[0]
 
@@ -67,6 +79,8 @@ void stopwatch_ON(void)
     if(EXT_flag==1  && EXT_flag_2==0)
     {
         LCD_clearScreen();
+        LCD_moveCursor(0,2);
+        LCD_displayCharacter('"');
         LCD_moveCursor(0,3);
         for(i=0;i<6;i++)
         {
@@ -77,6 +91,7 @@ void stopwatch_ON(void)
             LCD_intgerToString(tmr[5-i]);
 
         }
+        LCD_displayCharacter('"');
         EXT_flag =0;
 
     }
@@ -93,13 +108,13 @@ void stopwatch_ON(void)
     {
 
         Systick_deinit();
-
+        LCD_Custom_Char(Character1,0,1,13);
         EXT_flag =2;
 
     }
     else if(EXT_flag_2==2)
     {
-
+        LCD_Custom_Char(Character2,1,1,13);
         Systick_init(&config);
         EXT_flag =0;
         EXT_flag_2=0;

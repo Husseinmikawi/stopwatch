@@ -111,4 +111,6 @@ void LCD_intgerToString(int data);
  */
 void LCD_clearScreen(void);
 
+void LCD_Custom_Char ( unsigned char *msg,char patern_num,char pos_x,char pos_y);
+
 #endif /* LCD_H_ */
