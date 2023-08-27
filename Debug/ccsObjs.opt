@@ -1,0 +1,1 @@
+"./main.obj" "./tm4c123gh6pm_startup_ccs.obj" "./APP/stopwatch.obj" "./HAL/lcd.obj" "./MCAL/EXT_interrupt.obj" "./MCAL/gpio.obj" "./MCAL/systick.obj" "./Service/SW_Timer.obj" "./Service/util.obj" "../tm4c123gh6pm.cmd" -llibc.a 
